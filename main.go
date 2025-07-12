@@ -24,6 +24,8 @@ func main() {
 	}
 	if !g.Validate(outData) {
 		log.Panic("The program's solution is not valid :(")
+	} else {
+		log.Println("Your solution is correct!")
 	}
 }
 

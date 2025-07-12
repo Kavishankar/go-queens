@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"bytes"
+	"fmt"
+)
 
 type Grid struct {
 	dimension int
@@ -56,6 +59,20 @@ func (g *Grid) Solve() bool {
 }
 
 func (g *Grid) Validate(solvedData []byte) bool {
-	// TODO: Implement Validate
-	return false
+	var b bytes.Buffer
+	for _, row := range g.rows {
+		for _, cell := range row.cells {
+			b.WriteString(cell.String())
+		}
+	}
+	possibleSol := b.Bytes()
+	for idx := range solvedData {
+		if solvedData[idx] == 'Q' && possibleSol[idx] != 'Q' {
+			return false
+		}
+		if solvedData[idx] != 'Q' && possibleSol[idx] == 'Q' {
+			return false
+		}
+	}
+	return true
 }
