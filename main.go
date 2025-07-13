@@ -1,7 +1,10 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
+	"math"
 	"os"
 )
 
@@ -31,5 +34,21 @@ func main() {
 
 func ValidateInput(input []byte) (int, error) {
 	// TODO: Implement ValidateInput
-	return 9, nil
+
+	length := len(input)
+	dim := int(math.Sqrt(float64(length)))
+
+	if dim*dim != length {
+		return 0, errors.New("input is not a perfect square")
+	}
+
+	maxAllowedChar := byte('a' + dim - 1)
+
+	for i, b := range input {
+		if b < 'a' || b > maxAllowedChar {
+			return 0, fmt.Errorf("invalid character '%c' at position %d: must be between 'a' and '%c'", b, i, maxAllowedChar)
+		}
+	}
+
+	return dim, nil
 }
